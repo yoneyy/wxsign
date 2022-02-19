@@ -1,6 +1,6 @@
 {
   "name": "wsign",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "generate wechat / wework pay signture",
   "main": "lib/index.js",
   "module": "lib/index.js",
