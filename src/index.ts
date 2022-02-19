@@ -2,7 +2,7 @@
  * @Author: Yoney Y (YuTianyuan)
  * @Date: 2022-02-19 18:52:12
  * @Last Modified by: YoneyY (YuTianyuan)
- * @Last Modified time: 2022-02-19 20:39:38
+ * @Last Modified time: 2022-02-19 20:41:03
  */
 
 import fs from 'fs';
@@ -96,9 +96,7 @@ export class WxSign {
   generateSignXML(field: string): string {
     const { params = {} } = this.state;
     params[field] = this.generateSign('sign');
-
     const xmlStr = `<xml>${Reflect.ownKeys(params).map((item) => `<${<string>item}>${params[<string>item]}</${<string>item}>`).join('')}</xml>`;
-
     return xmlStr;
   }
 
