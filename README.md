@@ -17,7 +17,7 @@ Generate wechat / wework pay signture
 ### CommonJS
 
 ```javascript
-const WeChatPay = require('wxsign');
+const { WxSign } = require('wsign');
 
 const wxpay = new WeChatPay({
     key: 'ilq4i3rXe70rz3j4hrpjMKI3jqCDpr0q',
@@ -73,7 +73,7 @@ wpay
 ### ESM
 
 ```javascript
-import WeChatPay from 'wxsign';
+import { WxSign } from 'wsign';
 
 const wxpay = new WeChatPay({
     key: 'ilq4i3rXe70rz3j4hrpjMKI3jqCDpr0q',

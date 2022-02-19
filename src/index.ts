@@ -1,14 +1,14 @@
 /*
- * @Author: Yoney Y (YuTianyuan) 
- * @Date: 2022-02-19 18:52:12 
+ * @Author: Yoney Y (YuTianyuan)
+ * @Date: 2022-02-19 18:52:12
  * @Last Modified by: YoneyY (YuTianyuan)
- * @Last Modified time: 2022-02-19 19:26:24
+ * @Last Modified time: 2022-02-19 20:22:18
  */
 
 import fs from 'fs';
-import strdm from 'strdm';
 import https from 'https';
 import crypto from 'crypto';
+import { strdm } from 'strdm';
 
 export interface StateType {
   key: string;
@@ -24,7 +24,7 @@ export type ParamsType = Record<string, string | number | boolean | Record<strin
 
 
 /** 兼容微信/企业微信支付参数加密使用 */
-class WeChatPay {
+export class WxSign {
 
   state: StateType;
 
@@ -39,8 +39,8 @@ class WeChatPay {
 
   /**
    * generate only order
-   * @param num 
-   * @returns 
+   * @param num
+   * @returns
    */
   generateOrder(num: number): string {
     if (num < 6) throw new Error('The length of num cannot be less than 6');
@@ -60,8 +60,8 @@ class WeChatPay {
 
   /**
    * generate sign
-   * @param type 
-   * @returns 
+   * @param type
+   * @returns
    */
   generateSign(type: 'workwx_sign' | 'sign' = 'workwx_sign'): string {
     const { params = {} } = this.state;
@@ -90,8 +90,8 @@ class WeChatPay {
 
   /**
    * generate sign XML
-   * @param field 
-   * @returns 
+   * @param field
+   * @returns
    */
   generateSignXML(field: string): string {
     const { params = {} } = this.state;
@@ -106,7 +106,7 @@ class WeChatPay {
 
   /**
    * generate agent
-   * @returns 
+   * @returns
    */
   generateAgent(): https.Agent {
     if (!this.state.agent) throw new Error('Please pass in `agent` when instantiating')
@@ -120,11 +120,11 @@ class WeChatPay {
 
   /**
    * setData
-   * @param key 
-   * @param value 
-   * @returns 
+   * @param key
+   * @param value
+   * @returns
    */
-  setData(key: string, value: ParamsType): WeChatPay {
+  setData(key: string, value: ParamsType): WxSign {
     if (key == null) throw new Error('`key` param must be required');
     if (value == null) throw new Error('`value` param must be required');
     if (typeof key !== 'string') throw new Error('`key` param must be string type');
@@ -135,8 +135,8 @@ class WeChatPay {
 
   /**
    * setParams
-   * @param params 
-   * @returns 
+   * @param params
+   * @returns
    */
   setParams(params: ParamsType = {}) {
     this.state.params = params;
@@ -144,6 +144,3 @@ class WeChatPay {
   }
 
 }
-
-export default WeChatPay;
-module.exports = WeChatPay;
