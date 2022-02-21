@@ -2,39 +2,58 @@
  * @Author: Yoney Y (YuTianyuan)
  * @Date: 2022-02-19 18:52:12
  * @Last Modified by: YoneyY (YuTianyuan)
- * @Last Modified time: 2022-02-19 20:41:03
+ * @Last Modified time: 2022-02-21 23:51:23
  */
 
 import fs from 'fs';
+import strdm from 'strdm';
 import https from 'https';
 import crypto from 'crypto';
-import { strdm } from 'strdm';
 
-export interface StateType {
-  key: string;
-  secret?: string;
-  params?: ParamsType;
-  agent?: {
-    key: string | Buffer;
-    cert: string | Buffer;
+declare namespace WxSign {
+  interface StateType {
+    key: string;
+    secret?: string;
+    params?: ParamsType;
+    agent?: {
+      key: string | Buffer;
+      cert: string | Buffer;
+    }
   }
+
+  type ParamsType = Record<string, string | number | boolean | Record<string, unknown> | Array<unknown>>;
 }
 
-export type ParamsType = Record<string, string | number | boolean | Record<string, unknown> | Array<unknown>>;
 
+/**
+ * 兼容微信/企业微信支付参数加密使用
+ * Compatible with WeChat / WeWork payment parameter encryption
+ */
+class WxSign {
 
-/** 兼容微信/企业微信支付参数加密使用 */
-export class WxSign {
-
-  state: StateType;
+  state: WxSign.StateType;
 
   /**
    * 兼容微信/企业微信支付参数加密使用
+   * Compatible with WeChat / WeWork payment parameter encryption
    * @param state
    */
-  constructor(state: StateType) {
+  constructor(state: WxSign.StateType) {
     if (state.params) throw new Error('`params` field must be passed in through the `setParams` function');
     this.state = state;
+  }
+
+  /**
+   * generate random string
+   * If you just want to generate random strings, you can install strdm library
+   * 如果只想生成随机字符串，可以安装 strdm 库
+   * @link see strdm library https://www.npmjs.com/package/strdm
+   * @param length
+   * @param options
+   * @returns
+   */
+  generateString(length?: number, options?: string | boolean | strdm.Options): string {
+    return strdm(length, options);
   }
 
   /**
@@ -120,7 +139,7 @@ export class WxSign {
    * @param value
    * @returns
    */
-  setData(key: string, value: ParamsType): WxSign {
+  setData(key: string, value: WxSign.ParamsType): WxSign {
     if (key == null) throw new Error('`key` param must be required');
     if (value == null) throw new Error('`value` param must be required');
     if (typeof key !== 'string') throw new Error('`key` param must be string type');
@@ -134,9 +153,11 @@ export class WxSign {
    * @param params
    * @returns
    */
-  setParams(params: ParamsType = {}) {
+  setParams(params: WxSign.ParamsType = {}) {
     this.state.params = params;
     return this;
   }
 
 }
+
+export default WxSign;
